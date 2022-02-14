@@ -7,5 +7,4 @@
 
 import Foundation
 
-
 public let apiKey = "DEMO_KEY"

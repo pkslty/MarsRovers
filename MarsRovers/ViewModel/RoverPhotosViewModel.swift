@@ -8,15 +8,6 @@
 import SwiftUI
 import Combine
 
-struct PhotoViewModel: Hashable {
-    let image: UIImage?
-    let sol: Int
-    let earthDate: String
-    let cameraName: String
-    let cameraFullName: String
-    
-}
-
 class RoverPhotosViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var title = String()
@@ -55,7 +46,7 @@ class RoverPhotosViewModel: ObservableObject {
     }
     
     private func fetchPhotos() -> AnyPublisher<Photos, API.Error> {
-        photosTitle = "Photos from \(camera == "ALL" ? "all cameras" : "\(camera) camera") on \(sol) martian sol"
+        
         return api
             .photos(rover: rover, camera: camera, sol: sol, page: 1)
     }
@@ -70,15 +61,13 @@ class RoverPhotosViewModel: ObservableObject {
                 guard let self = self else { return }
                 if self.page == 1 {
                     self.photos = []
+                    
                 }
-                photos.photos.forEach { photo in
-                    ImageLoader.getImage(from: photo.imageUrlString, completion: {
-                        let photoViewModel = PhotoViewModel(image: $0,
-                                                            sol: photo.sol,
-                                                            earthDate: photo.earthDate,
-                                                            cameraName: photo.camera.name,
-                                                            cameraFullName: photo.camera.fullName)
-                        self.photos.append(photoViewModel)} )}
+                self.photosTitle = "\(photos.photos.count) photos from \(self.camera == "ALL" ? "all cameras" : "\(self.camera) camera") on \(self.sol) martian sol:"
+                photos.photos.forEach {
+                    let photoViewModel = PhotoViewModel(from: $0)
+                    self.photos.append(photoViewModel)
+                }
                 
             })
             .store(in: &subscriptions)

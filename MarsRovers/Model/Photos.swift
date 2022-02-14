@@ -12,12 +12,14 @@ struct Photos: Codable {
 }
 
 struct Photo: Codable {
+    let id: Int
     let imageUrlString: String
     let sol: Int
     let camera: Camera
     let earthDate: String
     
     enum CodingKeys: String, CodingKey {
+        case id
         case sol
         case camera
         case imageUrlString = "img_src"

@@ -19,6 +19,8 @@
 		3612A45627B686AC004D31B7 /* RoversViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3612A45527B686AC004D31B7 /* RoversViewModel.swift */; };
 		361A15A527B94E7500D2D8A9 /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361A15A427B94E7500D2D8A9 /* PhotoView.swift */; };
 		361A15A727B99DD900D2D8A9 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 361A15A627B99DD800D2D8A9 /* README.md */; };
+		361A15A927BA4FE100D2D8A9 /* PhotosCollectionElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361A15A827BA4FE100D2D8A9 /* PhotosCollectionElementView.swift */; };
+		361A15AB27BA558100D2D8A9 /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361A15AA27BA558100D2D8A9 /* PhotoViewModel.swift */; };
 		3675DA4B27B7052000C16442 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3675DA4A27B7051F00C16442 /* API.swift */; };
 		3675DA4D27B70A9000C16442 /* Configure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3675DA4C27B70A9000C16442 /* Configure.swift */; };
 		3675DA5327B7ECDA00C16442 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3675DA5227B7ECDA00C16442 /* ActivityIndicator.swift */; };
@@ -63,6 +65,8 @@
 		3612A45527B686AC004D31B7 /* RoversViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoversViewModel.swift; sourceTree = "<group>"; };
 		361A15A427B94E7500D2D8A9 /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
 		361A15A627B99DD800D2D8A9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		361A15A827BA4FE100D2D8A9 /* PhotosCollectionElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosCollectionElementView.swift; sourceTree = "<group>"; };
+		361A15AA27BA558100D2D8A9 /* PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
 		3675DA4A27B7051F00C16442 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		3675DA4C27B70A9000C16442 /* Configure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configure.swift; sourceTree = "<group>"; };
 		3675DA5227B7ECDA00C16442 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
@@ -170,6 +174,7 @@
 				3612A42927B66DEE004D31B7 /* RoversView.swift */,
 				3675DA5627B7FCD900C16442 /* RoverPhotosView.swift */,
 				361A15A427B94E7500D2D8A9 /* PhotoView.swift */,
+				361A15A827BA4FE100D2D8A9 /* PhotosCollectionElementView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -189,6 +194,7 @@
 			children = (
 				3612A45527B686AC004D31B7 /* RoversViewModel.swift */,
 				3675DA5827B7FD1D00C16442 /* RoverPhotosViewModel.swift */,
+				361A15AA27BA558100D2D8A9 /* PhotoViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -348,6 +354,7 @@
 				361A15A527B94E7500D2D8A9 /* PhotoView.swift in Sources */,
 				3675DA5727B7FCD900C16442 /* RoverPhotosView.swift in Sources */,
 				3675DA4D27B70A9000C16442 /* Configure.swift in Sources */,
+				361A15AB27BA558100D2D8A9 /* PhotoViewModel.swift in Sources */,
 				3675DA5927B7FD1D00C16442 /* RoverPhotosViewModel.swift in Sources */,
 				3612A45427B67579004D31B7 /* RoverType.swift in Sources */,
 				3675DA5D27B8870D00C16442 /* Photos.swift in Sources */,
@@ -356,6 +363,7 @@
 				3675DA4B27B7052000C16442 /* API.swift in Sources */,
 				3612A45227B67564004D31B7 /* Rover.swift in Sources */,
 				3675DA5B27B84F3800C16442 /* CameraButton.swift in Sources */,
+				361A15A927BA4FE100D2D8A9 /* PhotosCollectionElementView.swift in Sources */,
 				3675DA5527B7F56300C16442 /* LoadingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
