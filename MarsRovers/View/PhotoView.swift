@@ -32,6 +32,7 @@ struct PhotoView: View {
                 Spacer()
             }
             .navigationBarTitle("\(viewModel.cameraName) camera photo")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 class PhotoViewModel: ObservableObject, Identifiable {
     let id: Int
@@ -15,6 +16,7 @@ class PhotoViewModel: ObservableObject, Identifiable {
     let earthDate: String
     let cameraName: String
     let cameraFullName: String
+    var subscriptions = Set<AnyCancellable>()
     
     init(from model: Photo) {
         self.id = model.id
@@ -26,10 +28,18 @@ class PhotoViewModel: ObservableObject, Identifiable {
     }
     
     private func getImage(from urlString: String) {
-        ImageLoader.getImage(from: urlString, completion: {
-            self.image = $0
-            self.isLoading = false
-        })
+        ImageLoader.getImagePublisher(from: urlString)
+            .replaceError(with: UIImage(systemName: "photo"))
+            .sink(receiveCompletion: {[weak self] _ in
+                guard let self = self else { return }
+                self.isLoading = false
+            },
+                  receiveValue: { [weak self] image in
+                guard let self = self else {return }
+                self.image = image
+            })
+            
+            .store(in: &subscriptions)
     }
 }
 

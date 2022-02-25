@@ -10,66 +10,101 @@ import Combine
 
 class RoverPhotosViewModel: ObservableObject {
     @Published var isLoading: Bool = false
-    @Published var title = String()
-    @Published var sol: Int = 1 {
-        didSet {
-            subject.send()
-        }
-    }
+    @Published var sol: Int = 1
     @Published var photosTitle: String = String()
-    @Published var camera: String = "ALL" {
-        didSet {
-            subject.send()
-        }
-    }
-    @Published var page: Int = 1 {
-        didSet {
-            subject.send()
-        }
-    }
+    @Published var camera: String = "ALL"
+    @Published var cameras: [String] = ["ALL"]
     @Published var photos = [PhotoViewModel]()
+    @Published var error: ApiError? = nil
     private var subscriptions = Set<AnyCancellable>()
     private let api: API
     let rover: Rover
-    let subject = PassthroughSubject<Void, Never>()
     
-    init(api: API, rover: Rover) {
+    init(api: API, rover: Rover, timer: AnyPublisher<Date, Never>) {
         self.api = api
         self.rover = rover
-        self.title = "\(rover.roverType.roverName())"
-        subscriptToSubject()
-    }
-    
-    func onAppear() {
-        guard photos.isEmpty else { return }
-        subject.send()
-    }
-    
-    private func fetchPhotos() -> AnyPublisher<Photos, API.Error> {
         
-        return api
-            .photos(rover: rover, camera: camera, sol: sol, page: 1)
+        subscriptToState()
     }
     
-    private func subscriptToSubject() {
-        subject
-            .map { _ in self.fetchPhotos() }
-            .switchToLatest()
+    private func fetchPhotos(camera: String, sol: Int) -> AnyPublisher<Photos, Error> {
+        if !isLoading { isLoading = true }
+        return api
+            .photos(roverType: rover.roverType, camera: camera, sol: sol)
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { print($0) },
-                  receiveValue: { [weak self] photos in
-                guard let self = self else { return }
-                if self.page == 1 {
-                    self.photos = []
-                    
+            .catch { error -> AnyPublisher<Photos, Error> in
+                self.error = error
+                return Just(Photos(photos: []))
+                    .setFailureType(to: Error.self)
+                    .eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    private func subscriptToState() {
+        
+        let publisher = $sol
+            .compactMap { [weak self] sol in
+                self?.fetchPhotos(camera: "ALL", sol: sol)
+            }
+            .switchToLatest()
+            .share(replay: 1)
+        
+        publisher
+            .receive(on: DispatchQueue.main)
+            .map { response in
+                return response.photos.reduce(["ALL"]) { accumulator, photo in
+                    accumulator.contains(photo.camera.name) ? accumulator : accumulator + [photo.camera.name]
                 }
-                self.photosTitle = "\(photos.photos.count) photos from \(self.camera == "ALL" ? "all cameras" : "\(self.camera) camera") on \(self.sol) martian sol:"
-                photos.photos.forEach {
+            }
+            .replaceError(with: rover.cameras)
+            .assign(to: \.cameras, on: self)
+            .store(in: &subscriptions)
+        
+        publisher
+            .receive(on: DispatchQueue.main)
+            .map { response -> String in
+                let cameras = response.photos.map { $0.camera.name }
+                return cameras.contains(self.camera) ? self.camera : "ALL"
+            }
+            .replaceError(with: "ALL")
+            .assign(to: \.camera, on: self)
+            .store(in: &subscriptions)
+        
+        publisher
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                self.isLoading = false
+                print("Complete \(self.rover.roverType.roverName())")
+            },
+                  receiveValue: { [weak self] response in
+                guard let self = self else { return }
+                self.isLoading = false
+                })
+            .store(in: &subscriptions)
+        
+        $camera
+            .flatMap { _ in publisher }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                self.isLoading = false
+                print("Complete \(self.rover.roverType.roverName())")
+            },
+                  receiveValue: { [weak self] response in
+                guard let self = self else { return }
+                self.isLoading = false
+                self.photos = []
+                let filteredPhotos = response.photos.filter { $0.camera.name == self.camera || self.camera == "ALL" }
+                self.photosTitle = "\(filteredPhotos.count) photos from \(self.camera == "ALL" ? "all cameras" : "\(self.camera) camera") on \(self.sol) martian sol:"
+                filteredPhotos.forEach {
                     let photoViewModel = PhotoViewModel(from: $0)
                     self.photos.append(photoViewModel)
                 }
-                
+
             })
             .store(in: &subscriptions)
+        
     }
 }

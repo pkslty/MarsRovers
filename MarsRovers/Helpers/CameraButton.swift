@@ -21,10 +21,11 @@ struct CameraButton: View {
         }) {
             
             Text(text)
-                .font(.system(size: 11))
+                //.font(.system(size: 11))
+                .font(.caption2)
         }
         .foregroundColor(.black)
-        .frame(minWidth: 0, maxWidth: 50)
+        .frame(minWidth: 0, maxWidth: 80)
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(currentlySelected == text ? .orange : .white)

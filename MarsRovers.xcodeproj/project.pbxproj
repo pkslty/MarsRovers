@@ -21,6 +21,7 @@
 		361A15A727B99DD900D2D8A9 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 361A15A627B99DD800D2D8A9 /* README.md */; };
 		361A15A927BA4FE100D2D8A9 /* PhotosCollectionElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361A15A827BA4FE100D2D8A9 /* PhotosCollectionElementView.swift */; };
 		361A15AB27BA558100D2D8A9 /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361A15AA27BA558100D2D8A9 /* PhotoViewModel.swift */; };
+		363B20CB27BBD12000FFA065 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363B20CA27BBD12000FFA065 /* LazyView.swift */; };
 		3675DA4B27B7052000C16442 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3675DA4A27B7051F00C16442 /* API.swift */; };
 		3675DA4D27B70A9000C16442 /* Configure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3675DA4C27B70A9000C16442 /* Configure.swift */; };
 		3675DA5327B7ECDA00C16442 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3675DA5227B7ECDA00C16442 /* ActivityIndicator.swift */; };
@@ -30,6 +31,7 @@
 		3675DA5B27B84F3800C16442 /* CameraButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3675DA5A27B84F3800C16442 /* CameraButton.swift */; };
 		3675DA5D27B8870D00C16442 /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3675DA5C27B8870D00C16442 /* Photos.swift */; };
 		3675DA6027B8892400C16442 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3675DA5F27B8892400C16442 /* ImageLoader.swift */; };
+		36ADC10A27C2CEA60030CABE /* CombineExt in Frameworks */ = {isa = PBXBuildFile; productRef = 36ADC10927C2CEA60030CABE /* CombineExt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,7 @@
 		361A15A627B99DD800D2D8A9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		361A15A827BA4FE100D2D8A9 /* PhotosCollectionElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosCollectionElementView.swift; sourceTree = "<group>"; };
 		361A15AA27BA558100D2D8A9 /* PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
+		363B20CA27BBD12000FFA065 /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
 		3675DA4A27B7051F00C16442 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		3675DA4C27B70A9000C16442 /* Configure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configure.swift; sourceTree = "<group>"; };
 		3675DA5227B7ECDA00C16442 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
@@ -84,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36ADC10A27C2CEA60030CABE /* CombineExt in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,6 +209,7 @@
 				3675DA5227B7ECDA00C16442 /* ActivityIndicator.swift */,
 				3675DA5427B7F56300C16442 /* LoadingView.swift */,
 				3675DA5A27B84F3800C16442 /* CameraButton.swift */,
+				363B20CA27BBD12000FFA065 /* LazyView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -233,6 +238,9 @@
 			dependencies = (
 			);
 			name = MarsRovers;
+			packageProductDependencies = (
+				36ADC10927C2CEA60030CABE /* CombineExt */,
+			);
 			productName = MarsRovers;
 			productReference = 3612A42427B66DEE004D31B7 /* MarsRovers.app */;
 			productType = "com.apple.product-type.application";
@@ -305,6 +313,9 @@
 				Base,
 			);
 			mainGroup = 3612A41B27B66DEE004D31B7;
+			packageReferences = (
+				36ADC10827C2CEA60030CABE /* XCRemoteSwiftPackageReference "CombineExt" */,
+			);
 			productRefGroup = 3612A42527B66DEE004D31B7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -354,6 +365,7 @@
 				361A15A527B94E7500D2D8A9 /* PhotoView.swift in Sources */,
 				3675DA5727B7FCD900C16442 /* RoverPhotosView.swift in Sources */,
 				3675DA4D27B70A9000C16442 /* Configure.swift in Sources */,
+				363B20CB27BBD12000FFA065 /* LazyView.swift in Sources */,
 				361A15AB27BA558100D2D8A9 /* PhotoViewModel.swift in Sources */,
 				3675DA5927B7FD1D00C16442 /* RoverPhotosViewModel.swift in Sources */,
 				3612A45427B67579004D31B7 /* RoverType.swift in Sources */,
@@ -693,6 +705,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		36ADC10827C2CEA60030CABE /* XCRemoteSwiftPackageReference "CombineExt" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CombineCommunity/CombineExt.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		36ADC10927C2CEA60030CABE /* CombineExt */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36ADC10827C2CEA60030CABE /* XCRemoteSwiftPackageReference "CombineExt" */;
+			productName = CombineExt;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3612A41C27B66DEE004D31B7 /* Project object */;
 }

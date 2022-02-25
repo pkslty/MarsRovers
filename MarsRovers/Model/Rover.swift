@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Combine
 
 struct Rover: Codable, Identifiable {
     let roverType: RoverType
@@ -25,6 +26,10 @@ struct Rover: Codable, Identifiable {
             return ["FHAZ", "RHAZ", "MAST", "CHEMCAM", "MAHLI", "MARDI", "NAVCAM"]
         case .spirit, .opportunity:
             return ["FHAZ", "RHAZ", "NAVCAM", "PANCAM", "MINITES"]
+        case .perseverance:
+            return ["EDL_DDCAM", "EDL_PUCAM2", "EDL_RDCAM", "EDL_RUCAM", "FRONT_HAZCAM_LEFT_A",
+                    "FRONT_HAZCAM_RIGHT_A", "MCZ_LEFT", "MCZ_RIGHT", "NAVCAM_LEFT", "NAVCAM_RIGHT",
+                    "REAR_HAZCAM_LEFT", "REAR_HAZCAM_RIGHT", "SKYCAM"]
         }
     }
     var id: Int { roverType.roverNumber() }

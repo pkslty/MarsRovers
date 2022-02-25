@@ -33,13 +33,13 @@ struct RoversView: View {
                             HStack {
                                 ForEach(rover.cameras, id: \.self) { camera in
                                     Text(camera)
-                                        .font(.system(size: 12, weight: .light, design: .default))
+                                        .font(.caption2)
                                         .background(Color.orange)
                                 }
                             }
                         }
                         .background(NavigationLink("",
-                                                   destination: RoverPhotosView(viewModel: RoverPhotosViewModel(api: API(), rover: rover)))
+                                                   destination: LazyView(RoverPhotosView(viewModel: RoverPhotosViewModel(api: API(), rover: rover, timer: viewModel.timer))))
                                         .opacity(0))
                     }
                 }
@@ -47,5 +47,18 @@ struct RoversView: View {
                 .listStyle(.plain)
             }
         }
+        .refreshable {
+            viewModel.fetchRovers()
+        }
+        .alert(item: self.$viewModel.error) { error in
+          Alert(
+            title: Text("Network error"),
+            message: Text(error.errorDescription),
+            dismissButton: .default(
+                Text("Try again later")
+            )
+          )
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }

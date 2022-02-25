@@ -8,27 +8,28 @@
 import Foundation
 import SwiftUI
 import Combine
+import CombineExt
 
-struct API {
-        
-    enum Error: LocalizedError, Identifiable {
-        var id: String { localizedDescription }
-        
-        case addressUnreachable(URL)
-        case invalidResponse
-        
-        var errorDescription: String? {
-            switch self {
-            case .invalidResponse: return "The server responded with garbage."
-            case .addressUnreachable(let url): return "\(url.absoluteString) is unreachable."
-            }
+enum ApiError: Error, Identifiable {
+    var id: String { localizedDescription }
+    
+    case addressUnreachable(URL)
+    case invalidResponse
+    
+    var errorDescription: String {
+        switch self {
+        case .invalidResponse: return "The server responded with garbage."
+        case .addressUnreachable: return "Server is unreachable."
         }
     }
-    
+}
+
+struct API {
+
     enum Method {
         
         case manifest(RoverType)
-        case photos(RoverType, String, Int, Int)
+        case photos(RoverType, String, Int)
         
         var url: URL {
             var urlComponents = URLComponents(string: "https://api.nasa.gov/mars-photos/api/v1/")!
@@ -38,13 +39,12 @@ struct API {
                 urlComponents.path.append("manifests/\(rover.roverName().lowercased())")
                 urlComponents.queryItems = queryItems
                 return urlComponents.url!
-            case .photos(let rover, let camera, let sol, let page):
+            case .photos(let rover, let camera, let sol):
                 urlComponents.path.append("rovers/\(rover.roverName().lowercased())/photos")
                 if camera != "ALL" {
                     queryItems.append(URLQueryItem(name: "camera", value: camera))
                 }
                 queryItems.append(URLQueryItem(name: "sol", value: String(sol)))
-                //queryItems.append(URLQueryItem(name: "page", value: String(page)))
                 urlComponents.queryItems = queryItems
                 return urlComponents.url!
             }
@@ -54,21 +54,21 @@ struct API {
     private let decoder = JSONDecoder()
     private let apiQueue = DispatchQueue(label: "API", qos: .default, attributes: .concurrent)
     
-    func roverManifest(roverType: RoverType) -> AnyPublisher<Rover, Error> {
+    func roverManifest(roverType: RoverType) -> AnyPublisher<Rover, ApiError> {
         URLSession.shared.dataTaskPublisher(for: Method.manifest(roverType).url)
-            .receive(on: apiQueue)
+            .subscribe(on: apiQueue)
             .map { $0.0 }
             .decode(type: Rover.self, decoder: decoder)
-            .mapError { error -> Error in
+            .mapError { error -> ApiError in
                 switch error {
                 case is URLError:
-                    return Error.addressUnreachable(Method.manifest(roverType).url)
-                default: return Error.invalidResponse
+                    return ApiError.addressUnreachable(Method.manifest(roverType).url)
+                default: return ApiError.invalidResponse
                 }
             }
             .eraseToAnyPublisher()
     }
-    func manifests(rovers: [RoverType]) -> AnyPublisher<[Rover], Error> {
+    func manifests(rovers: [RoverType]) -> AnyPublisher<[Rover], ApiError> {
         
         let initialPublisher = roverManifest(roverType: rovers[0])
         let remainRovers = Array(rovers.dropFirst())
@@ -86,17 +86,17 @@ struct API {
             .eraseToAnyPublisher()
     }
     
-    func photos(rover: Rover, camera: String, sol: Int, page: Int) -> AnyPublisher<Photos, Error> {
-        print(Method.photos(rover.roverType, camera, sol, page).url)
-        return URLSession.shared.dataTaskPublisher(for: Method.photos(rover.roverType, camera, sol, page).url)
-            .receive(on: apiQueue)
+    func photos(roverType: RoverType, camera: String, sol: Int) -> AnyPublisher<Photos, ApiError> {
+        return URLSession.shared.dataTaskPublisher(for: Method.photos(roverType, camera, sol).url)
+            .print("photos:")
             .map { $0.0 }
             .decode(type: Photos.self, decoder: decoder)
-            .mapError { error -> Error in
+            .subscribe(on: apiQueue)
+            .mapError { error -> ApiError in
                 switch error {
                 case is URLError:
-                    return Error.addressUnreachable(Method.photos(rover.roverType, camera, sol, page).url)
-                default: return Error.invalidResponse
+                    return ApiError.addressUnreachable(Method.manifest(roverType).url)
+                default: return ApiError.invalidResponse
                 }
             }
             .eraseToAnyPublisher()
