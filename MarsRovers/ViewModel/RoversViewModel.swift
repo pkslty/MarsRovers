@@ -36,7 +36,7 @@ class RoversViewModel: ObservableObject {
                     .setFailureType(to: ApiError.self)
                     .eraseToAnyPublisher()
             }
-            .sink(receiveCompletion: {
+            .sink(receiveCompletion: { _ in 
                 self.isLoading = false
             },
                   receiveValue: { self.rovers = $0 })
