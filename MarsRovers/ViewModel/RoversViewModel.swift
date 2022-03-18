@@ -15,14 +15,14 @@ class RoversViewModel: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     private let api: API
     private let roverTypes: [RoverType] = [.curiosity, .spirit, .opportunity, .perseverance]
-    let timer: AnyPublisher<Date, Never>
+    //let timer: AnyPublisher<Date, Never>
     
     init(api: API) {
         self.api = api
-        timer = Timer.publish(every: 0.5,on: RunLoop.main, in: .common)
-            .autoconnect()
-            .share()
-            .eraseToAnyPublisher()
+//        timer = Timer.publish(every: 0.5,on: RunLoop.main, in: .common)
+//            .autoconnect()
+//            .share()
+//            .eraseToAnyPublisher()
     }
     
     func fetchRovers() {

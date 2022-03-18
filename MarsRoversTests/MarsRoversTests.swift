@@ -7,30 +7,53 @@
 
 import XCTest
 @testable import MarsRovers
+import SwiftUI
+import Combine
 
 class MarsRoversTests: XCTestCase {
-
+    @ObservedObject var roversViewModel: RoversViewModel = .init(api: API())
+    var subscriptions = Set<AnyCancellable>()
+    
+    
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        subscriptions = []
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func testSuccesfullyLoadRoversManifests() throws {
+        
+        let expectation = expectation(description: "Succesfully load rovers manifests")
+        
+        
+        let publisher = roversViewModel.$rovers
+            .combineLatest(roversViewModel.$isLoading, roversViewModel.$error)
+        
+        roversViewModel.fetchRovers()
+        
+        publisher
+            .dropFirst()
+            .prefix(while: { $0.1 != false })
+            .last()
+            .sink(receiveCompletion: {
+                expectation.fulfill()
+                XCTAssertEqual($0, .finished)
+                print($0)
+            }, receiveValue: { value in
+                XCTAssertEqual(value.1, true)
+                XCTAssertEqual(value.0.count, 4)
+                XCTAssertNil(value.2)
+            })
+            .store(in: &subscriptions)
+        
+        
+        
+        
+        wait(for: [expectation], timeout: 20.0)
     }
+    
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
 
 }

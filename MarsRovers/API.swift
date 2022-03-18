@@ -54,7 +54,7 @@ struct API {
     private let decoder = JSONDecoder()
     private let apiQueue = DispatchQueue(label: "API", qos: .default, attributes: .concurrent)
     
-    func roverManifest(roverType: RoverType) -> AnyPublisher<Rover, ApiError> {
+    private func roverManifest(roverType: RoverType) -> AnyPublisher<Rover, ApiError> {
         URLSession.shared.dataTaskPublisher(for: Method.manifest(roverType).url)
             .subscribe(on: apiQueue)
             .map { $0.0 }

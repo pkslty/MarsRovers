@@ -20,7 +20,7 @@ class RoverPhotosViewModel: ObservableObject {
     private let api: API
     let rover: Rover
     
-    init(api: API, rover: Rover, timer: AnyPublisher<Date, Never>) {
+    init(api: API, rover: Rover) {
         self.api = api
         self.rover = rover
         

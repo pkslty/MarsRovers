@@ -39,7 +39,7 @@ struct RoversView: View {
                             }
                         }
                         .background(NavigationLink("",
-                                                   destination: LazyView(RoverPhotosView(viewModel: RoverPhotosViewModel(api: API(), rover: rover, timer: viewModel.timer))))
+                                                   destination: LazyView(RoverPhotosView(viewModel: RoverPhotosViewModel(api: API(), rover: rover))))
                                         .opacity(0))
                     }
                 }
