@@ -7,5 +7,4 @@
 
 import Foundation
 
-public let apiKey = "***REMOVED***"
-//public let apiKey = "DEMO_KEY"
+public let apiKey = "DEMO_KEY"
